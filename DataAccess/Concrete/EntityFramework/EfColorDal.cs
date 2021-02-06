@@ -39,16 +39,11 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
-        {
-            
-        }
-
         public List<Color> GetAll(Expression<Func<Color, bool>> filter = null)
         {
             using (MyDbContext context = new MyDbContext())
             {
-                return filter == null ? context.Set<Car>().ToList() : context.Set<Car>().Where(filter).ToList();
+                return filter == null ? context.Set<Color>().ToList() : context.Set<Color>().Where(filter).ToList();
             }
         }
 
