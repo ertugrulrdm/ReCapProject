@@ -50,6 +50,7 @@ namespace ConsoleUI
 
 
             //Tests
+            //------------
 
             //MainCarTest();
             //MainColorTest();
@@ -59,8 +60,41 @@ namespace ConsoleUI
             //UpdateCar(carForUpdate);
             //GetCarById();
             //GetAllCars();
+            //GetCarByColorId();
+            //GetCarByBrandId();
         }
 
+        private static void GetCarByColorId(int colorId)
+        {
+            ColorManager colorManager = new ColorManager(new EfColorDal());
+            CarManager carManager = new CarManager(new EfCarDal());
+            List<Car> carList = new List<Car>();
+            foreach (var car in carManager.GetByColorId(colorId))
+            {
+                carList.Add(car);
+            }
+            Console.WriteLine("Rengi {0} olan arabalar;", colorManager.GetById(colorId).ColorName.ToLower());
+            for (int i = 0; i < carList.Count; i++)
+            {
+                Console.WriteLine(carList[i].CarName);
+            }
+        }
+
+        private static void GetCarByBrandId(int brandId)
+        {
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            CarManager carManager = new CarManager(new EfCarDal());
+            List<Car> carList = new List<Car>();
+            Console.WriteLine("Markası {0} olan araba modelleri;", brandManager.GetById(brandId).BrandName);
+            foreach (var car in carManager.GetByBrandId(brandId))
+            {
+                carList.Add(car);
+            }
+            for (int i = 0; i < carList.Count; i++)
+            {
+                Console.WriteLine(carList[i].CarName);
+            }
+        }
         private static void MainColorTest()
         {
             ColorManager colorManager = new ColorManager(new EfColorDal());
@@ -109,7 +143,7 @@ namespace ConsoleUI
             carManager.Add(carForTest);
         }
 
-        private static void CarTest()
+        private static void MainCarTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
             foreach (var car in carManager.GetCarDetails())
@@ -133,3 +167,4 @@ namespace ConsoleUI
         }
     }
 }
+

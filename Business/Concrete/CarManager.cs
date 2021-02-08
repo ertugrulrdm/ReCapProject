@@ -13,6 +13,9 @@ namespace Business.Concrete
         ICarDal _carDal;
         private Car car;
 
+        IColorDal _colorDal;
+        private Color color;
+
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
@@ -46,6 +49,16 @@ namespace Business.Concrete
         public void Update(Car car)
         {
             _carDal.Update(car);
+        }
+
+        public List<Car> GetByColorId(int colorId)
+        {
+            return _carDal.GetAll(c=>c.ColorId == colorId);
+        }
+
+        public List<Car> GetByBrandId(int brandId)
+        {
+            return _carDal.GetAll(c=>c.BrandId == brandId);
         }
     }
 }
