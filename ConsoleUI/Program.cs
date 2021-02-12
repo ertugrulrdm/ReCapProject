@@ -140,7 +140,7 @@ namespace ConsoleUI
         }
 
 
-        //This method must be used with Add method for run properly.
+        //This method must be used with Add method to run properly.
         private static void UpdateCar(Car carForUpdate)
         {
             CarManager carManager = new CarManager(new EfCarDal());
