@@ -48,79 +48,95 @@ namespace ConsoleUI
                 BrandName = "Audi",
             };
 
+            Customer customer1 = new Customer
+            {
+                CompanyName = "Microsoft Corp.",
+            };
+
+            Customer customer2 = new Customer
+            {
+                CompanyName = "Google Inc.",
+            };
+
+            Customer customer3 = new Customer
+            {
+                CompanyName = "Oracle",
+            };
+            Customer customer4 = new Customer
+            {
+                CompanyName = "Apple Inc.",
+            };
+
+            Customer customer5 = new Customer
+            {
+                CompanyName = "Intel Corp.",
+            };
+
+            User user1 = new User
+            {
+                FirstName = "Engin",
+                LastName = "Demiroğ",
+                Email = "engindemirog@gmail.com",
+                Password = "123456",
+            };
+
+            User user2 = new User
+            {
+                FirstName = "Kerem",
+                LastName = "Varış",
+                Email = "keremvaris@gmail.com",
+                Password = "123456",
+            };
+
+            User user3 = new User
+            {
+                FirstName = "Murat",
+                LastName = "Kurtboğan",
+                Email = "muratkurtbogan@gmail.com",
+                Password = "123456",
+            };
+
+            DateTime rentingDateTime = new DateTime(2021, 2, 11);
+            DateTime returningDateTime = new DateTime(2021, 2, 18);
+
+            Rental rentalForTest = new Rental
+            {
+                RentalId = 1,
+                CarId = 5,
+                CustomerId = 1,
+                RentDate = rentingDateTime,
+                ReturnDate = returningDateTime,
+            };
 
             //Tests
-            //------------
-
-            //MainCarTest();
-            //MainColorTest();
-            //MainBrandTest();
-            //AddCar(carForTest);
+            //------------------------
+            //AddCar(rentalForTest);
             //DeleteCar(carForTest);
             //UpdateCar(carForUpdate);
-            //GetCarById();
-            //GetAllCars();
-            //GetCarByColorId();
-            //GetCarByBrandId();
+            //AddRental(rental);
+            //AddCustomer(customer);
+            //AddUser(user);
         }
 
-        private static void GetCarByColorId(int colorId)
+        private static void AddUser(User user)
         {
-            ColorManager colorManager = new ColorManager(new EfColorDal());
-            CarManager carManager = new CarManager(new EfCarDal());
-            List<Car> carList = new List<Car>();
-            foreach (var car in carManager.GetByColorId(colorId))
-            {
-                carList.Add(car);
-            }
-            Console.WriteLine("Rengi {0} olan arabalar;", colorManager.GetById(colorId).ColorName.ToLower());
-            for (int i = 0; i < carList.Count; i++)
-            {
-                Console.WriteLine(carList[i].CarName);
-            }
+            UserManager userManager = new UserManager(new EfUserDal());
+            var addedUser = userManager.Add(user);
+            Console.WriteLine(addedUser.Message + "\nEklenen kullanıcı: {0} {1}", user.FirstName, user.LastName);
         }
 
-        private static void GetCarByBrandId(int brandId)
+        private static void AddCustomer(Customer customer)
         {
-            BrandManager brandManager = new BrandManager(new EfBrandDal());
-            CarManager carManager = new CarManager(new EfCarDal());
-            List<Car> carList = new List<Car>();
-            Console.WriteLine("Markası {0} olan araba modelleri;", brandManager.GetById(brandId).BrandName);
-            foreach (var car in carManager.GetByBrandId(brandId))
-            {
-                carList.Add(car);
-            }
-            for (int i = 0; i < carList.Count; i++)
-            {
-                Console.WriteLine(carList[i].CarName);
-            }
-        }
-        private static void MainColorTest()
-        {
-            ColorManager colorManager = new ColorManager(new EfColorDal());
-            foreach (var color in colorManager.GetAll())
-            {
-                Console.WriteLine("---------");
-                Console.WriteLine("ID: {0}\nRenk: {1}", color.ColorId, color.ColorName);
-                Console.WriteLine("---------\n");
-            }
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+            var addedCustomer = customerManager.Add(customer);
+            Console.WriteLine(addedCustomer.Message + "\nEklenen müşteri şirketin adı: {0}", customer.CompanyName);
         }
 
-        private static void GetAllCars()
+        private static void AddRental(Rental rental)
         {
-            CarManager carManager = new CarManager(new EfCarDal());
-            var cars = carManager.GetAll();
-            foreach (var car in cars)
-            {
-                Console.WriteLine(car.CarName);
-            }
-        }
-
-        private static void GetCarById()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            var carFromDb = carManager.GetById(3);
-            Console.WriteLine("Arabanın adı {0}", carFromDb.CarName);
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var addedRental = rentalManager.Add(rental);
+            Console.WriteLine(addedRental.Message);
         }
 
 
@@ -141,29 +157,6 @@ namespace ConsoleUI
         {
             CarManager carManager = new CarManager(new EfCarDal());
             carManager.Add(carForTest);
-        }
-
-        private static void MainCarTest()
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            foreach (var car in carManager.GetCarDetails())
-            {
-                Console.WriteLine("---------");
-                Console.WriteLine("Arabanın;\n");
-                Console.WriteLine("Adı: {0}\nMarkası: {1}\nRengi: {2}\nGünlük Ücreti: {3}", car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
-                Console.WriteLine("---------\n");
-            }
-        }
-
-        private static void BrandTest()
-        {
-            BrandManager brandManager = new BrandManager(new EfBrandDal());
-            foreach (var brand in brandManager.GetAll())
-            {
-                Console.WriteLine("---------");
-                Console.WriteLine("ID: {0}\nMarka: {1}", brand.BrandId, brand.BrandName);
-                Console.WriteLine("---------\n");
-            }
         }
     }
 }
