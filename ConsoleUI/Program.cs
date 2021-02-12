@@ -116,6 +116,19 @@ namespace ConsoleUI
             //AddRental(rental);
             //AddCustomer(customer);
             //AddUser(user);
+            //GetCarDetails();
+        }
+
+        private static void GetCarDetails()
+        {
+            CarManager carManager = new CarManager(new EfCarDal());
+            var carDetails = carManager.GetCarDetails();
+            Console.WriteLine("ARABALAR");
+            Console.WriteLine("---------\n");
+            foreach (var car in carDetails.Data)
+            {
+                Console.WriteLine("---------\nAraba adı: {0}\nArabanın markası: {1}\nArabanın rengi: {2}\nGünlük ücreti: {3} TL\n---------", car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
+            }
         }
 
         private static void AddUser(User user)
@@ -140,7 +153,7 @@ namespace ConsoleUI
         }
 
 
-        //This method must be used with Add method for run properly.
+        //This method must be used with Add method to run properly.
         private static void UpdateCar(Car carForUpdate)
         {
             CarManager carManager = new CarManager(new EfCarDal());
