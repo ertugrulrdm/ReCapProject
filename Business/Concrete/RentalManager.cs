@@ -1,4 +1,5 @@
-﻿using Core.Utilities.Results;
+﻿using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Business.Concrete
 {
-    public class RentalManager
+    public class RentalManager: IRentalService
     {
         IRentalDal _rentalDal;
 
