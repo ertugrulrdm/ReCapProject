@@ -117,6 +117,10 @@ namespace ConsoleUI
             //AddCustomer(customer);
             //AddUser(user);
             //GetCarDetails();
+
+            CarManager carManager = new CarManager(new EfCarDal());
+            var car = carManager.GetById(1);
+            Console.WriteLine(car.Data.CarName);
         }
 
         private static void GetCarDetails()
