@@ -12,26 +12,16 @@ namespace DataAccess.Concrete.InMemory
     public class InMemoryCarDal : ICarDal
     {
         List<Car> _cars;
-        List<Color> _color;
         public InMemoryCarDal()
         {
             _cars = new List<Car>
             {
-                new Car{CarId=1, BrandId=1, ColorId=1, DailyPrice=300, ModelYear=2020, Description = "2020 model beyaz Renault Clio."},
-                new Car{CarId=2, BrandId=2, ColorId=2, DailyPrice=500, ModelYear=2015, Description = "2015 model siyah Audi A3."},
-                new Car{CarId=3, BrandId=2, ColorId=3, DailyPrice=650, ModelYear=2020, Description = "2018 model bordo Audi A4."},
-                new Car{CarId=4, BrandId=3, ColorId=1, DailyPrice=100, ModelYear=2020, Description = "2010 model beyaz Toyota Corolla."},
-                new Car{CarId=5, BrandId=4, ColorId=2, DailyPrice=800, ModelYear=2020, Description = "2021 model siyah BMW 320i."},
-            };
-
-            _color = new List<Color>
-            {
-                new Color{ColorId=1, ColorName="Beyaz"},
-                new Color{ColorId=2, ColorName="Siyah"},
-                new Color{ColorId=3, ColorName="Bordo"},
-                new Color{ColorId=4, ColorName="Mavi"},
-                new Color{ColorId=5, ColorName="Gri"},
-                new Color{ColorId=6, ColorName="Kırmızı"},
+                new Car{CarId=1, BrandId=1, ColorId=1, DailyPrice=250000,
+                 ModelYear="2019", Descriptions="TOGG: Yeni Lige Yolculuk"},
+                new Car{CarId=2, BrandId=2, ColorId=2, DailyPrice=70000,
+                 ModelYear="2015", Descriptions="BMW: Sheer Driving Pleasure"},
+                new Car{CarId=3, BrandId=1, ColorId=1, DailyPrice=70000,
+                 ModelYear="2015", Descriptions="Lamborghini: For Love of the Car."}
             };
         }
 
@@ -46,9 +36,29 @@ namespace DataAccess.Concrete.InMemory
             _cars.Remove(carToDelete);
         }
 
+        public Car Get(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Car> GetAll()
         {
             return _cars;
+        }
+
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Car> GetById(int id)
+        {
+            return _cars.Where(c => c.CarId == id).ToList();
+        }
+
+        public List<CarDetailDto> GetCarDetails()
+        {
+            throw new NotImplementedException();
         }
 
         public void Update(Car car)
@@ -58,28 +68,7 @@ namespace DataAccess.Concrete.InMemory
             carToUpdate.ColorId = car.ColorId;
             carToUpdate.ModelYear = car.ModelYear;
             carToUpdate.DailyPrice = car.DailyPrice;
-            carToUpdate.Description = car.Description;
-        }
-
-        public Car GetById(int carId)
-        {
-            Car carToGet = _cars.SingleOrDefault(c => c.CarId == carId);
-            return carToGet;
-        }
-
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Car Get(Expression<Func<Car, bool>> filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<CarDetailDto> GetCarDetails()
-        {
-            throw new NotImplementedException();
+            carToUpdate.Descriptions = car.Descriptions;
         }
     }
 }

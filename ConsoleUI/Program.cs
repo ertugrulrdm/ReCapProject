@@ -3,7 +3,6 @@ using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using System;
-using System.Collections.Generic;
 
 namespace ConsoleUI
 {
@@ -11,170 +10,69 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
+            //CarTest();
+            //BrandTest();
+            RentalTest();
 
-            //Objects for tests
-
-            Car carForTest = new Car
+            CarImage carImage = new CarImage
             {
-                CarId = 7,
-                CarName = "Renault Clio",
-                BrandId = 2,
-                ColorId = 5,
-                DailyPrice = 330,
-                ModelYear = 2019,
-                Description = "2019 model mavi Renault Clio.",
+                Id = 1,
+                CarId = 1,
+                ImagePath = @"c:\sources\images\birinci.ikinci.ucuncu.jpg",
+                Date = DateTime.Now
             };
-
-            Car carForUpdate = new Car
-            {
-                CarId = 7,
-                CarName = "Renault Clio",
-                BrandId = 2,
-                ColorId = 1,
-                DailyPrice = 330,
-                ModelYear = 2019,
-                Description = "2019 model beyaz Renault Clio.",
-            };
-
-            Color colorForTest = new Color
-            {
-                ColorId = 6,
-                ColorName = "Bordo",
-            };
-
-            Brand brandForTest = new Brand
-            {
-                BrandId = 6,
-                BrandName = "Audi",
-            };
-
-            Customer customer1 = new Customer
-            {
-                CompanyName = "Microsoft Corp.",
-            };
-
-            Customer customer2 = new Customer
-            {
-                CompanyName = "Google Inc.",
-            };
-
-            Customer customer3 = new Customer
-            {
-                CompanyName = "Oracle",
-            };
-            Customer customer4 = new Customer
-            {
-                CompanyName = "Apple Inc.",
-            };
-
-            Customer customer5 = new Customer
-            {
-                CompanyName = "Intel Corp.",
-            };
-
-            User user1 = new User
-            {
-                FirstName = "Engin",
-                LastName = "Demiroğ",
-                Email = "engindemirog@gmail.com",
-                Password = "123456",
-            };
-
-            User user2 = new User
-            {
-                FirstName = "Kerem",
-                LastName = "Varış",
-                Email = "keremvaris@gmail.com",
-                Password = "123456",
-            };
-
-            User user3 = new User
-            {
-                FirstName = "Murat",
-                LastName = "Kurtboğan",
-                Email = "muratkurtbogan@gmail.com",
-                Password = "123456",
-            };
-
-            DateTime rentingDateTime = new DateTime(2021, 2, 11);
-            DateTime returningDateTime = new DateTime(2021, 2, 18);
-
-            Rental rentalForTest = new Rental
-            {
-                RentalId = 1,
-                CarId = 5,
-                CustomerId = 1,
-                RentDate = rentingDateTime,
-                ReturnDate = returningDateTime,
-            };
-
-            //Tests
-            //------------------------
-            //AddCar(rentalForTest);
-            //DeleteCar(carForTest);
-            //UpdateCar(carForUpdate);
-            //AddRental(rental);
-            //AddCustomer(customer);
-            //AddUser(user);
-            //GetCarDetails();
-
-            CarManager carManager = new CarManager(new EfCarDal());
-            var car = carManager.GetById(1);
-            Console.WriteLine(car.Data.CarName);
+            string[] fileSplit = carImage.ImagePath.Split('.');
+            var extensionOfFile = "." + fileSplit[fileSplit.Length - 1];
+            var newPathName = Guid.NewGuid().ToString() + extensionOfFile;
+            Console.WriteLine(newPathName);
         }
 
-        private static void GetCarDetails()
+        private static void RentalTest()
         {
-            CarManager carManager = new CarManager(new EfCarDal());
-            var carDetails = carManager.GetCarDetails();
-            Console.WriteLine("ARABALAR");
-            Console.WriteLine("---------\n");
-            foreach (var car in carDetails.Data)
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            rentalManager.Add(new Rental { CustomerId = 1, CarId = 1, RentDate = DateTime.Now});
+            rentalManager.Add(new Rental { CustomerId = 1, CarId = 1, RentDate = DateTime.Now});
+            rentalManager.Add(new Rental { CustomerId = 2, CarId = 1, RentDate = DateTime.Now});
+
+            foreach (var rental in rentalManager.GetRentalDetails(1).Data)
             {
-                Console.WriteLine("---------\nAraba adı: {0}\nArabanın markası: {1}\nArabanın rengi: {2}\nGünlük ücreti: {3} TL\n---------", car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
+                Console.WriteLine("Araba adı = " + rental.CarName + ",   Müşteri adı = " + rental.CustomerName +
+                    ",  Arabayı kiraladığı gün = " + rental.RentDate + ",  Kullanıcı adı = " + rental.UserName);
             }
         }
 
-        private static void AddUser(User user)
-        {
-            UserManager userManager = new UserManager(new EfUserDal());
-            var addedUser = userManager.Add(user);
-            Console.WriteLine(addedUser.Message + "\nEklenen kullanıcı: {0} {1}", user.FirstName, user.LastName);
-        }
-
-        private static void AddCustomer(Customer customer)
-        {
-            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
-            var addedCustomer = customerManager.Add(customer);
-            Console.WriteLine(addedCustomer.Message + "\nEklenen müşteri şirketin adı: {0}", customer.CompanyName);
-        }
-
-        private static void AddRental(Rental rental)
-        {
-            RentalManager rentalManager = new RentalManager(new EfRentalDal());
-            var addedRental = rentalManager.Add(rental);
-            Console.WriteLine(addedRental.Message);
-        }
-
-
-        //This method must be used with Add method to run properly.
-        private static void UpdateCar(Car carForUpdate)
+        private static void CarTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            carManager.Update(carForUpdate);
-        }
+            carManager.GetAll();
+            Console.WriteLine("-----------------");
+            Console.WriteLine("(Araba Adı --- Marka Adı)");
+            carManager.GetCarDetails();
+            Console.WriteLine("-----------------");
+            carManager.Add(new Car { CarName = "Porsche Carrera GT", DailyPrice = 1000000 });
+            Console.WriteLine("-----------------");
+            carManager.Add(new Car { CarName = "a", DailyPrice = -1 });
+            Console.WriteLine("-----------------");
+            carManager.Update(new Car { CarName = "MERCEDES AMG" });
+            Console.WriteLine("-----------------");
+            carManager.Delete(new Car { CarName = "BMW M5" });
+            Console.WriteLine("-----------------");
+            carManager.GetById(3);
 
-        private static void DeleteCar(Car carForTest)
-        {
-            CarManager carManager = new CarManager(new EfCarDal());
-            carManager.Delete(carForTest);
         }
-
-        private static void AddCar(Car carForTest)
+        private static void BrandTest()
         {
-            CarManager carManager = new CarManager(new EfCarDal());
-            carManager.Add(carForTest);
+            BrandManager brandManager = new BrandManager(new EfBrandDal());
+            brandManager.GetAll();
+            Console.WriteLine("-----------------");
+            brandManager.Add(new Brand { BrandName = "Porsche"});
+            Console.WriteLine("-----------------");
+            brandManager.Update(new Brand { BrandName = "MERCEDES" });
+            Console.WriteLine("-----------------");
+            brandManager.Delete(new Brand { BrandName = "BMW" });
+            Console.WriteLine("-----------------");
+            brandManager.GetById(2);
+
         }
     }
 }
-
